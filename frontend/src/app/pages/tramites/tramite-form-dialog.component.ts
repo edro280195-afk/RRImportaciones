@@ -2,6 +2,7 @@ import { Component, signal, model, output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TramiteService, CreateTramiteRequest } from '../../services/tramite.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-tramite-form-dialog',
@@ -202,10 +203,10 @@ export class TramiteFormDialogComponent {
 
   private async loadCatalogs(): Promise<void> {
     const [clientesRes, vehiculosRes, tramitadoresRes, aduanasRes] = await Promise.all([
-      fetch('http://localhost:5198/api/clientes?pageSize=100'),
-      fetch('http://localhost:5198/api/vehiculos?pageSize=100'),
-      fetch('http://localhost:5198/api/tramitadores?soloActivos=true'),
-      fetch('http://localhost:5198/api/aduanas'),
+      fetch(`${environment.apiUrl}/api/clientes?pageSize=100`),
+      fetch(`${environment.apiUrl}/api/vehiculos?pageSize=100`),
+      fetch(`${environment.apiUrl}/api/tramitadores?soloActivos=true`),
+      fetch(`${environment.apiUrl}/api/aduanas`),
     ]);
     if (clientesRes.ok) { const d = await clientesRes.json(); this.clientes = d.items || d; }
     if (vehiculosRes.ok) { const d = await vehiculosRes.json(); this.vehiculos = d.items || d; }

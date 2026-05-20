@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { TramiteService, TramiteListDto } from '../../services/tramite.service';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 interface EstadoTab {
   label: string;
@@ -226,8 +227,8 @@ export class TramitesListComponent {
 
   async loadCatalogs() {
     const [tramitadoresRes, aduanasRes] = await Promise.all([
-      fetch('http://localhost:5198/api/tramitadores?soloActivos=true'),
-      fetch('http://localhost:5198/api/aduanas'),
+      fetch(`${environment.apiUrl}/api/tramitadores?soloActivos=true`),
+      fetch(`${environment.apiUrl}/api/aduanas`),
     ]);
     if (tramitadoresRes.ok) this.tramitadores = await tramitadoresRes.json();
     if (aduanasRes.ok) this.aduanas = await aduanasRes.json();

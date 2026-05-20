@@ -2,6 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { VehiculoService, VehiculoListDto } from '../../services/vehiculo.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-inventario',
@@ -146,6 +147,6 @@ export class InventarioComponent {
   }
 
   fileUrl(url: string): string {
-    return url.startsWith('http') ? url : `http://localhost:5198${url}`;
+    return url.startsWith('http') ? url : `${environment.apiUrl}${url}`;
   }
 }

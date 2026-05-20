@@ -6,6 +6,7 @@ import { GastoHormigaListDto, GastoHormigaResumenDto, GastoHormigaService, TipoG
 import { TramiteListDto, TramiteService } from '../../services/tramite.service';
 import { VehiculoListDto, VehiculoService } from '../../services/vehiculo.service';
 import { NotificationService } from '../../services/notification.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-gastos-hormiga-list',
@@ -272,7 +273,7 @@ export class GastosHormigaListComponent implements OnInit {
   }
 
   fileUrl(url: string): string {
-    return url.startsWith('http') ? url : `http://localhost:5198${url}`;
+    return url.startsWith('http') ? url : `${environment.apiUrl}${url}`;
   }
 
   private emptyForm() {

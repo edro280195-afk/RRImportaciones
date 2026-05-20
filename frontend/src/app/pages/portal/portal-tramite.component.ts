@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { PortalService, PortalTramiteDto, PortalTimelineItemDto } from '../../services/portal.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-portal-tramite',
@@ -1867,7 +1868,7 @@ export class PortalTramiteComponent implements OnInit {
 
   fileUrl(url: string): string {
     if (url.startsWith('http')) return url;
-    return `http://localhost:5198${url}`;
+    return `${environment.apiUrl}${url}`;
   }
 
   contactUrl(): string {

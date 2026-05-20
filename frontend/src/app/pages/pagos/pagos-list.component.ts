@@ -9,6 +9,7 @@ import { CotizacionService } from '../../services/cotizacion.service';
 import { NotificationService } from '../../services/notification.service';
 import { PagoListDto, PagoService } from '../../services/pago.service';
 import { TramiteListDto, TramiteService } from '../../services/tramite.service';
+import { environment } from '../../../environments/environment';
 
 interface SelectOption<T> {
   label: string;
@@ -517,7 +518,7 @@ export class PagosListComponent implements OnInit {
   }
 
   fileUrl(url: string): string {
-    return url.startsWith('http') ? url : `http://localhost:5198${url}`;
+    return url.startsWith('http') ? url : `${environment.apiUrl}${url}`;
   }
 
   reciboUrl(pago: PagoListDto): string {

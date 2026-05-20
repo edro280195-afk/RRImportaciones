@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { PersonalCampoService, PersonalCampoDto } from '../../services/personal-campo.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-personal',
@@ -104,7 +105,7 @@ export class PersonalComponent {
   private http = inject(HttpClient);
   private service = inject(PersonalCampoService);
   auth = inject(AuthService);
-  private readonly base = 'http://localhost:5198/api/personal-campo';
+  private readonly base = environment.apiUrl + '/api/personal-campo';
 
   personal = signal<PersonalCampoDto[]>([]);
   loading = signal(false);

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TramitadorService, TramitadorDto } from '../../services/tramitador.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-tramitadores',
@@ -111,7 +112,7 @@ export class TramitadoresComponent {
   private http = inject(HttpClient);
   private service = inject(TramitadorService);
   auth = inject(AuthService);
-  private readonly base = 'http://localhost:5198/api/tramitadores';
+  private readonly base = environment.apiUrl + '/api/tramitadores';
 
   tramitadores = signal<TramitadorDto[]>([]);
   loading = signal(false);

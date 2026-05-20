@@ -10,6 +10,7 @@ import { CotizacionService } from '../../services/cotizacion.service';
 import { NotificationService } from '../../services/notification.service';
 import { AuthService } from '../../services/auth.service';
 import { PortalService } from '../../services/portal.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-tramite-detail',
@@ -1241,7 +1242,7 @@ export class TramiteDetailComponent implements OnInit {
   }
 
   fileUrl(url: string): string {
-    return url.startsWith('http') ? url : `http://localhost:5198${url}`;
+    return url.startsWith('http') ? url : `${environment.apiUrl}${url}`;
   }
 
   reciboUrl(pago: TramitePagoDto): string {

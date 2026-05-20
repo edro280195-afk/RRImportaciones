@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { PartnerExternoService, PartnerExternoDto } from '../../services/partner-externo.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-partners',
@@ -103,7 +104,7 @@ export class PartnersComponent {
   private http = inject(HttpClient);
   private service = inject(PartnerExternoService);
   auth = inject(AuthService);
-  private readonly base = 'http://localhost:5198/api/partners-externos';
+  private readonly base = environment.apiUrl + '/api/partners-externos';
 
   partners = signal<PartnerExternoDto[]>([]);
   loading = signal(false);
