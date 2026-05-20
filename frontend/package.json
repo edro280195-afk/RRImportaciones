@@ -26,6 +26,7 @@
     "@tailwindcss/cli": "^4.3.0",
     "@tailwindcss/postcss": "^4.3.0",
     "echarts": "^6.0.0",
+    "gsap": "^3.15.0",
     "postcss": "^8.5.14",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.4",
