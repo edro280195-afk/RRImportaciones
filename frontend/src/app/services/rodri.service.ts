@@ -42,4 +42,9 @@ export class RodriService {
   getProviders(): Observable<RodriProvidersResponse> {
     return this.http.get<RodriProvidersResponse>(`${this.base}/providers`);
   }
+
+  /** Sintetiza texto con ElevenLabs. Devuelve un Blob de audio/mpeg. */
+  tts(texto: string): Observable<Blob> {
+    return this.http.post(`${this.base}/tts`, { texto }, { responseType: 'blob' });
+  }
 }

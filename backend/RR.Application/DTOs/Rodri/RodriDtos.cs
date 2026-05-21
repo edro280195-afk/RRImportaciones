@@ -39,6 +39,12 @@ public class RodriProvidersResponse
     public string Default { get; set; } = "openai";
 }
 
+public class RodriTtsRequest
+{
+    /// <summary>Texto que Rodri leerá en voz alta. Se limpia de markdown antes de enviar a ElevenLabs.</summary>
+    public string Texto { get; set; } = string.Empty;
+}
+
 public class RodriToolDefinition
 {
     public string Name { get; set; } = string.Empty;

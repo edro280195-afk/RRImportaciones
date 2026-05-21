@@ -384,6 +384,7 @@ export class ModoDonComponent implements OnInit, OnDestroy, AfterViewChecked {
   private synth = window.speechSynthesis;
   private voiceList: SpeechSynthesisVoice[] = [];
   private finalTranscript = '';
+  private elevenLabsAudio: HTMLAudioElement | null = null;
 
   isRecording = signal(false);
   isSpeaking = signal(false);
@@ -421,7 +422,7 @@ export class ModoDonComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy(): void {
     this.recognition?.abort();
-    this.synth.cancel();
+    this.stopSpeaking();
   }
 
   ngAfterViewChecked(): void {
@@ -515,38 +516,67 @@ export class ModoDonComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   // ─────────────────────────────────────────────────────────────────────
-  // TTS — HABLAR
+  // TTS — HABLAR (ElevenLabs primero, browser como fallback)
   // ─────────────────────────────────────────────────────────────────────
   speak(text: string): void {
     if (!this.voiceEnabled() || !text) return;
-    this.synth.cancel();
+    this.stopSpeaking();
 
-    const clean = text
-      .replace(/\*\*(.+?)\*\*/gs, '$1')
-      .replace(/`[^`]+`/g, '')
-      .replace(/<[^>]+>/g, '')
-      .replace(/[*_#]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-
+    const clean = this.cleanForTts(text);
     if (!clean) return;
 
+    this.isSpeaking.set(true);
+
+    // Intentar ElevenLabs
+    this.rodriService.tts(clean).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        this.elevenLabsAudio = new Audio(url);
+        this.elevenLabsAudio.onended = () => {
+          this.isSpeaking.set(false);
+          URL.revokeObjectURL(url);
+          this.elevenLabsAudio = null;
+        };
+        this.elevenLabsAudio.onerror = () => {
+          this.isSpeaking.set(false);
+          URL.revokeObjectURL(url);
+          this.elevenLabsAudio = null;
+        };
+        this.elevenLabsAudio.play().catch(() => this.isSpeaking.set(false));
+      },
+      error: () => {
+        // Fallback: voz del navegador si ElevenLabs falla
+        this.speakBrowser(clean);
+      },
+    });
+  }
+
+  private speakBrowser(clean: string): void {
     const utterance = new SpeechSynthesisUtterance(clean);
     utterance.lang = 'es-MX';
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-
     const esVoice = this.voiceList.find(v => v.lang === 'es-MX')
       || this.voiceList.find(v => v.lang.startsWith('es-'))
       || this.voiceList.find(v => v.lang.startsWith('es'));
     if (esVoice) utterance.voice = esVoice;
-
     utterance.onstart = () => this.isSpeaking.set(true);
     utterance.onend   = () => this.isSpeaking.set(false);
     utterance.onerror = () => this.isSpeaking.set(false);
-
     this.synth.speak(utterance);
+  }
+
+  private cleanForTts(text: string): string {
+    return text
+      .replace(/\*\*(.+?)\*\*/gs, '$1')
+      .replace(/\*(.+?)\*/gs, '$1')
+      .replace(/`[^`]+`/g, '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/#{1,6}\s/g, '')
+      .replace(/[_#]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 2000); // no gastar más de 2000 chars por llamada
   }
 
   speakMessage(text: string): void {
@@ -554,6 +584,13 @@ export class ModoDonComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   stopSpeaking(): void {
+    // Detener ElevenLabs
+    if (this.elevenLabsAudio) {
+      this.elevenLabsAudio.pause();
+      this.elevenLabsAudio.src = '';
+      this.elevenLabsAudio = null;
+    }
+    // Detener browser TTS
     this.synth.cancel();
     this.isSpeaking.set(false);
   }
