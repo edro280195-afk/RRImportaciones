@@ -657,6 +657,7 @@ public class RodriService : IRodriService
         sb.AppendLine("11. Cuando recomiendes ir a una sección del sistema, menciona la ruta exacta (ej. 've a Cotizaciones > Nueva Cotización').");
         sb.AppendLine("12. Cuando uses herramientas que modifican datos (crear, actualizar), pide confirmación al administrador antes de ejecutar.");
         sb.AppendLine("13. Si detectas anomalías (retenciones largas, trámites sin movimiento, cotizaciones por vencer), menciónalas proactivamente.");
+        sb.AppendLine("14. Si la pregunta no tiene relación con R&R Importaciones ni con el negocio (ej. matemáticas, trivia, recetas, entretenimiento), responde en UNA sola línea: 'Eso está fuera de mi área — soy el asistente de R&R. ¿En qué te puedo ayudar del negocio?' No expliques más. No respondas la pregunta ajena.");
 
         // ════════════════════════════════════════════════
         // 9. INSTRUCCIONES ESPECIALES PARA DUEÑO
@@ -731,6 +732,10 @@ public class RodriService : IRodriService
             sb.AppendLine("'Don Ricardo, déjeme buscar eso...' y usa las herramientas. Si aun así no encuentras,");
             sb.AppendLine("dile: 'Don Ricardo, ese dato no lo tengo en el sistema ahorita.'");
             sb.AppendLine("Un dato inventado le cuesta dinero y confianza. Es inaceptable.");
+            sb.AppendLine();
+            sb.AppendLine("PREGUNTAS FUERA DEL NEGOCIO:");
+            sb.AppendLine("Si Don Ricardo pregunta algo que no tiene que ver con R&R (matemáticas, noticias, chistes, etc.),");
+            sb.AppendLine("responde SOLO esto, sin más: 'Jaja Don Ricardo, para eso no me alcanza, pero del negocio sí. ¿Qué necesita?'");
         }
 
         return sb.ToString();

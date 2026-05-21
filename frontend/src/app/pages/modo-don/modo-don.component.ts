@@ -685,7 +685,7 @@ export class ModoDonComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.shouldScrollToBottom = true;
 
     const historial: RodriMessage[] = this.allMessages()
-      .slice(0, -1).slice(-10)
+      .slice(0, -1).slice(-6)   // últimos 3 intercambios (6 mensajes) para ahorrar tokens
       .map(m => ({ role: m.role, texto: m.texto }));
 
     this.rodriService.chat(texto, historial, this.provider()).subscribe({
