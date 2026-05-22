@@ -67,7 +67,14 @@ public class RodriService : IRodriService
         _httpClient = httpClient;
         _db = db;
         _httpClient.Timeout = TimeSpan.FromSeconds(120);
-        _openAiKey = config["OpenAi:ApiKey"] ?? Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        // Busca la clave en múltiples fuentes para mayor robustez (variables de entorno en Render
+        // pueden estar en distintas capitalizaciones; .NET IConfiguration es case-insensitive,
+        // pero el nombre exacto de la variable de entorno sí importa en Linux).
+        _openAiKey = config["OpenAi:ApiKey"]
+            ?? config["OpenAI:ApiKey"]
+            ?? Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+            ?? Environment.GetEnvironmentVariable("OpenAI_API_KEY")
+            ?? Environment.GetEnvironmentVariable("OpenAi__ApiKey");
         _geminiKey = config["GeminiApiKey"];
         _provider = config["AiProvider"] ?? "openai";
         _tools = tools;
