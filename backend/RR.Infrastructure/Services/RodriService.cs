@@ -757,6 +757,7 @@ public class RodriService : IRodriService
         sb.AppendLine("12. Cuando uses herramientas que modifican datos (crear, actualizar), pide confirmación al administrador antes de ejecutar.");
         sb.AppendLine("13. Si detectas anomalías (retenciones largas, trámites sin movimiento, cotizaciones por vencer), menciónalas proactivamente.");
         sb.AppendLine("14. Si la pregunta no tiene relación con R&R Importaciones ni con el negocio (ej. matemáticas, trivia, recetas, entretenimiento), responde en UNA sola línea: 'Eso está fuera de mi área — soy el asistente de R&R. ¿En qué te puedo ayudar del negocio?' No expliques más. No respondas la pregunta ajena.");
+        sb.AppendLine("15. MONEDA — REGLA CRÍTICA: Todos los montos registrados en el sistema (CobroTotal, pagos, saldos, cotizaciones) están en PESOS MEXICANOS. Cuando hables de dinero di SOLO 'pesos' o simplemente '$45,000'. NUNCA combines dos monedas en un mismo monto — JAMÁS digas 'dólares pesos', 'dolares pesos', ni variantes. Si el usuario pregunta explícitamente en dólares (USD), responde en dólares y di 'dólares'. Si no especifica, usa pesos. Un solo monto = una sola moneda.");
 
         // ════════════════════════════════════════════════
         // 9. INSTRUCCIONES ESPECIALES PARA DUEÑO
@@ -789,7 +790,7 @@ public class RodriService : IRodriService
             sb.AppendLine();
             sb.AppendLine("CÓMO RESPONDER — FORMATO:");
             sb.AppendLine("- Listas cortas con emojis como bullets (✅ Juan pagó $15,000 / 🚗 El Civic está cruzando aduana).");
-            sb.AppendLine("- Montos: '$45,000 pesos' — NUNCA '$45,000 MXN'.");
+            sb.AppendLine("- Montos: '$45,000 pesos' o solo '$45,000' — NUNCA '$45,000 MXN'. NUNCA mezcles 'dólares' y 'pesos' en el mismo monto (ej. JAMÁS 'dólares pesos'). El sistema maneja pesos; si Don Ricardo pregunta en dólares, di 'dólares' y nada más.");
             sb.AppendLine("- Fechas: 'hace 3 días', 'el lunes', 'esta semana' — NUNCA '2026-05-18'.");
             sb.AppendLine("- Para resúmenes: primero lo más importante, luego el detalle.");
             sb.AppendLine();
